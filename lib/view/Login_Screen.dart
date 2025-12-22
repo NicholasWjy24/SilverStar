@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:silverstar_mobile/view/Home_Screen.dart';
+import 'package:flutter/gestures.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -67,6 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text('Login', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
+                const SizedBox(height: 12),
                 TextField(
                   controller: usernameController,
                   obscureText: false,
@@ -108,6 +111,43 @@ class _LoginScreenState extends State<LoginScreen> {
                       _onPressedLogin(usernameController.text, passwordController.text, context);
                     },
                     child: const Text("Login"),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                GestureDetector(
+                  onTap: () {
+                    print("Forgot Password clicked");
+                  },
+                  child: const Text(
+                    "Forgot password?",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                RichText(
+                  text: TextSpan(
+                    text: "Don't have an account? ",
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Click Here",
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            print("Click Here clicked");
+                            // Navigator.push(...)
+                          },
+                      ),
+                    ],
                   ),
                 )
               ],
