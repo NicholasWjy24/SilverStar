@@ -11,8 +11,12 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.grey,
+        scaffoldBackgroundColor: Colors.white
+      ),
       debugShowCheckedModeBanner: false,
-      title: 'My App',
+      title: 'SilverStar Mobile',
       home: const LoginScreen(), // 👈 this is your first screen
     );
   }
