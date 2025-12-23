@@ -6,8 +6,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: FirebaseOptions(
-        apiKey: 'AIzaSyB0qos6u-vFpojvd-F_ZHPmVHfgt8ACkig', // This is unique to your registered app
-        appId: '1:980104717760:android:262fc15685d85ba2309425', // This is unique to your registered app
+        apiKey: 'AIzaSyB0qos6u-vFpojvd-F_ZHPmVHfgt8ACkig',
+        appId: '1:980104717760:android:262fc15685d85ba2309425',
         messagingSenderId: '980104717760',
         projectId: 'silverstar-mobile-app',
       )
@@ -27,7 +27,7 @@ class MainApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       title: 'SilverStar Mobile',
-      home: const LoginScreen(), // 👈 this is your first screen
+      home: const LoginScreen(),
     );
   }
 }
