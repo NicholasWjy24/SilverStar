@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:silverstar_mobile/background.dart';
 import 'package:silverstar_mobile/view/Home_Screen.dart';
 import 'package:flutter/gestures.dart';
+import 'package:silverstar_mobile/view/Register_Screen.dart';
 
 import '../services/auth_service.dart';
 
@@ -18,10 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  Future<void> _onPressedLogin(
-      String username,
-      String password,
-      ) async {
+  Future<void> _onPressedLogin(String username, String password) async {
     if (username.isEmpty || password.isEmpty) {
       _showErrorDialog(
         title: "ERROR!",
@@ -54,10 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _showErrorDialog({
-    required String title,
-    required String message,
-  }) {
+  void _showErrorDialog({required String title, required String message}) {
     if (!mounted) return;
 
     showDialog(
@@ -74,7 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -162,8 +156,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            print("Click Here clicked");
-                            // Navigator.push(...)
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegisterScreen(),
+                              ),
+                            );
                           },
                       ),
                     ],
