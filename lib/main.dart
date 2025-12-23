@@ -4,7 +4,14 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: 'AIzaSyB0qos6u-vFpojvd-F_ZHPmVHfgt8ACkig', // This is unique to your registered app
+        appId: '1:980104717760:android:262fc15685d85ba2309425', // This is unique to your registered app
+        messagingSenderId: '980104717760',
+        projectId: 'silverstar-mobile-app',
+      )
+  );
   runApp(const MainApp());
 }
 
