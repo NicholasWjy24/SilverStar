@@ -13,19 +13,28 @@ class RegisterScreen extends StatefulWidget {
 final authService = AuthService();
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController birthDateController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SilkyMetallicBackground(
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsetsGeometry.all(8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-              Text('Register')
-            ]),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsetsGeometry.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text('Register'),
+              TextField(
+
+              )
+            ],
           ),
         ),
       ),
