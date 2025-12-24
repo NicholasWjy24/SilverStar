@@ -87,6 +87,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelText: "Re-type Password",
                 ),
               ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: emailController,
+                obscureText: false ,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  labelText: "E-mail",
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: birthDateController,
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: "Date of Birth",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  suffixIcon: Icon(Icons.calendar_today),
+                ),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(2100),
+                  );
+                  if (pickedDate != null) {
+                    birthDateController.text =
+                    "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                  }
+                },
+              ),
             ],
           ),
         ),
