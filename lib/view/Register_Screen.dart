@@ -21,6 +21,8 @@ final TextEditingController birthDateController = TextEditingController();
 final TextEditingController genderController = TextEditingController();
 final TextEditingController phoneNumberController = TextEditingController();
 
+String selectedGender = '';
+
 class _RegisterScreenState extends State<RegisterScreen> {
   bool obscureTextPassword = true;
   bool obscureTextConfirmPassword = true;
@@ -35,13 +37,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String gender,
     String phoneNumber,
   ) async {
-    if (username.isEmpty ||
-        fullName.isEmpty ||
-        password.isEmpty ||
-        confirmPassword.isEmpty ||
-        email.isEmpty ||
-        birthDate.isEmpty ||
-        gender.isEmpty) {
+    if (username.trim().isEmpty ||
+        fullName.trim().isEmpty ||
+        password.trim().isEmpty ||
+        confirmPassword.trim().isEmpty ||
+        email.trim().isEmpty ||
+        birthDate.trim().isEmpty ||
+        gender.trim().isEmpty) {
       _showErrorDialog(
         title: "ERROR!",
         message: "Please Check again your input",
@@ -261,7 +263,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      _onPressedRegister(
+                        usernameController.text,
+                        fullNameController.text,
+                        passwordController.text,
+                        confirmPasswordController.text,
+                        emailController.text,
+                        birthDateController.text,
+                        selectedGender,
+                        phoneNumberController.text,
+                      );
+                    },
                     child: const Text("Register"),
                   ),
                 ),
@@ -307,6 +320,7 @@ class _GenderToggleState extends State<GenderToggle> {
         onTap: () {
           setState(() {
             _selectedGender = value;
+            selectedGender = _selectedGender.toString();
           });
         },
         child: AnimatedContainer(
