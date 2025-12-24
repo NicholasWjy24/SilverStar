@@ -23,7 +23,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController birthDateController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
 
   bool obscureTextPassword = true;
   bool obscureTextConfirmPassword = true;
@@ -31,134 +30,154 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Register')),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsetsGeometry.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TextField(
-                controller: fullnameController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(title: Text('Register'), backgroundColor: Colors.transparent,),
+      body: SilkyMetallicBackground(
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsetsGeometry.all(8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: fullnameController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    labelText: "Full Name",
                   ),
-                  labelText: "Full Name",
                 ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: usernameController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    labelText: "Username",
                   ),
-                  labelText: "Username",
                 ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: emailController,
-                obscureText: false,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: emailController,
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    labelText: "E-mail",
                   ),
-                  labelText: "E-mail",
                 ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: phoneNumberController,
-                obscureText: false,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: phoneNumberController,
+                  obscureText: false,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    labelText: "Phone Number",
                   ),
-                  labelText: "Phone Number",
                 ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: birthDateController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: "Date of Birth",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: birthDateController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: "Date of Birth",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    suffixIcon: Icon(Icons.calendar_today),
                   ),
-                  suffixIcon: Icon(Icons.calendar_today),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime(2100),
+                    );
+                    if (pickedDate != null) {
+                      birthDateController.text =
+                          "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                    }
+                  },
                 ),
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime(2100),
-                  );
-                  if (pickedDate != null) {
-                    birthDateController.text =
-                        "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                  }
-                },
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: passwordController,
-                obscureText: obscureTextPassword,
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
+                const SizedBox(height: 8),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [Text('Gender : '), GenderToggle()],
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: passwordController,
+                  obscureText: obscureTextPassword,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        obscureTextPassword = !obscureTextPassword;
+                        setState(() {
+                          obscureTextPassword;
+                        });
+                      },
+                      icon: obscureTextPassword
+                          ? Icon(Icons.visibility)
+                          : Icon(Icons.visibility_off),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    labelText: "Password",
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: confirmPasswordController,
+                  obscureText: obscureTextConfirmPassword,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        obscureTextConfirmPassword = !obscureTextConfirmPassword;
+                        setState(() {
+                          obscureTextConfirmPassword;
+                        });
+                      },
+                      icon: obscureTextConfirmPassword
+                          ? Icon(Icons.visibility)
+                          : Icon(Icons.visibility_off),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    labelText: "Re-type Password",
+                  ),
+                ),
+                Spacer(),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        side: const BorderSide(color: Colors.black26, width: 1),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
                     onPressed: () {
-                      obscureTextPassword = !obscureTextPassword;
-                      setState(() {
-                        obscureTextPassword;
-                      });
+
                     },
-                    icon: obscureTextPassword
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
+                    child: const Text("Register"),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  labelText: "Password",
                 ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: confirmPasswordController,
-                obscureText: obscureTextConfirmPassword,
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      obscureTextConfirmPassword = !obscureTextConfirmPassword;
-                      setState(() {
-                        obscureTextConfirmPassword;
-                      });
-                    },
-                    icon: obscureTextConfirmPassword
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  labelText: "Re-type Password",
-                ),
-              ),
-              const SizedBox(height: 8),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Gender : '),
-                  GenderToggle(),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
