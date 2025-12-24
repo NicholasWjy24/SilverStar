@@ -12,27 +12,117 @@ class RegisterScreen extends StatefulWidget {
 }
 
 final authService = AuthService();
+final TextEditingController usernameController = TextEditingController();
+final TextEditingController fullNameController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
+final TextEditingController confirmPasswordController = TextEditingController();
+final TextEditingController emailController = TextEditingController();
+final TextEditingController birthDateController = TextEditingController();
+final TextEditingController genderController = TextEditingController();
+final TextEditingController phoneNumberController = TextEditingController();
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController fullnameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController birthDateController = TextEditingController();
-  final TextEditingController genderController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-
   bool obscureTextPassword = true;
   bool obscureTextConfirmPassword = true;
+
+  Future<void> _onPressedRegister(
+    String username,
+    String fullName,
+    String password,
+    String confirmPassword,
+    String email,
+    String birthDate,
+    String gender,
+    String phoneNumber,
+  ) async {
+    if (username.isEmpty ||
+        fullName.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty ||
+        email.isEmpty ||
+        birthDate.isEmpty ||
+        gender.isEmpty) {
+      _showErrorDialog(
+        title: "ERROR!",
+        message: "Please Check again your input",
+      );
+      return;
+    } else {
+      try {
+        final register = await authService.registerUser(
+          address: '-',
+          dateOfBirth: birthDate,
+          email: email,
+          gender: gender,
+          password: password,
+          phoneNumber: phoneNumber,
+          username: username,
+          fullName: fullName,
+        );
+
+        if (!mounted) return;
+
+        if (register != null) {
+          if (!mounted) return;
+
+          showDialog(
+            context: context,
+            barrierDismissible: false, // user must tap OK
+            builder: (_) => AlertDialog(
+              title: const Text("Success"),
+              content: const Text(
+                "Your account has been registered successfully.",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // close dialog
+                    Navigator.of(context).pop(); // go back to previous screen
+                  },
+                  child: const Text("OK"),
+                ),
+              ],
+            ),
+          );
+        }
+      } catch (e) {
+        if (!mounted) return;
+
+        _showErrorDialog(
+          title: "Failed To Register",
+          message: "Please try again later",
+        );
+      }
+    }
+  }
+
+  void _showErrorDialog({required String title, required String message}) {
+    if (!mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      appBar: AppBar(title: Text('Register'), backgroundColor: Colors.transparent,),
+      appBar: AppBar(
+        title: Text('Register'),
+        backgroundColor: Colors.transparent,
+      ),
       body: SilkyMetallicBackground(
         child: SafeArea(
           child: Padding(
@@ -41,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 TextField(
-                  controller: fullnameController,
+                  controller: fullNameController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -142,7 +232,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
                       onPressed: () {
-                        obscureTextConfirmPassword = !obscureTextConfirmPassword;
+                        obscureTextConfirmPassword =
+                            !obscureTextConfirmPassword;
                         setState(() {
                           obscureTextConfirmPassword;
                         });
@@ -170,9 +261,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                    onPressed: () {
-
-                    },
+                    onPressed: () {},
                     child: const Text("Register"),
                   ),
                 ),

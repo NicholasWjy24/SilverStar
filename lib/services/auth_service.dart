@@ -4,10 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> registerUser({
+  Future<User?> registerUser({
     required String email,
     required String password,
     required String username,
+    required String fullName,
     required String phoneNumber,
     required String address,
     required String dateOfBirth,
@@ -17,6 +18,8 @@ class AuthService {
       // 1. Daftarkan user ke Firebase Authentication
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      final user = userCredential.user;
+      if (user == null) return null;
 
       // 2. Ambil Unique ID (UID) yang otomatis dibuat oleh Firebase
       String uid = userCredential.user!.uid;
@@ -25,6 +28,7 @@ class AuthService {
       await FirebaseFirestore.instance.collection('users').doc(uid).set({
         'uid': uid,
         'username': username,
+        'fullName': fullName,
         'email': email,
         'password': password,
         'phoneNumber': phoneNumber,
@@ -32,10 +36,9 @@ class AuthService {
         'gender': gender,
         'createdAt': DateTime.now(),
       });
-
-      print("User berhasil didaftarkan!");
+      return user;
     } catch (e) {
-      print("Terjadi kesalahan: $e");
+      rethrow;
     }
   }
 
