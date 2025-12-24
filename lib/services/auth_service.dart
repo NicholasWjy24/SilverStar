@@ -15,38 +15,38 @@ class AuthService {
     required String gender,
   }) async {
     try {
-      // 1. Daftarkan user ke Firebase Authentication
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      final user = userCredential.user;
-      if (user == null) return null;
+      print("Auth Successful!");
 
-      // 2. Ambil Unique ID (UID) yang otomatis dibuat oleh Firebase
-      String uid = userCredential.user!.uid;
+      User? user = userCredential.user;
 
-      // 3. Simpan data tambahan (username & email) ke Firestore
-      await FirebaseFirestore.instance.collection('users').doc(uid).set({
-        'uid': uid,
-        'username': username,
-        'fullName': fullName,
-        'email': email,
-        'password': password,
-        'phoneNumber': phoneNumber,
-        'dateOfBirth': dateOfBirth,
-        'gender': gender,
-        'createdAt': DateTime.now(),
-      });
+      if (user != null) {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'uid': user.uid,
+          'username': username,
+          'fullName': fullName,
+          'email': email,
+          'password': password,
+          'phoneNumber': phoneNumber,
+          'dateOfBirth': dateOfBirth,
+          'gender': gender,
+          'createdAt': DateTime.now(),
+        });
+      }
+      print("Database Save Successful!");
       return user;
+    } on FirebaseAuthException catch (e) {
+      print("Auth Error: ${e.code}");
+      rethrow;
     } catch (e) {
+      print("General Error: $e");
       rethrow;
     }
   }
 
   // LOGIN
-  Future<User?> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<User?> login({required String email, required String password}) async {
     final result = await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,
